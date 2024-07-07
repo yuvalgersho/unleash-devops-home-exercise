@@ -1,6 +1,6 @@
 # Unleash Devops Home Exercise
 
-This repository contains an node Express server written in TypeScript that hosts an endpoint to check if a file exists in an specified S3 bucket. 
+This repository contains an node Express server written in TypeScript that hosts an endpoint to check if a file exists in a specified S3 bucket. 
 
 `GET /check-file?fileName=myfile.txt`
 
