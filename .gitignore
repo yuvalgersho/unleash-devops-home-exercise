@@ -1,3 +1,11 @@
 node_modules
 dist
 .vscode/launch.json
+
+#cdk
+*.swp
+cdk.context.json
+package-lock.json
+yarn.lock
+.cdk.staging
+cdk.out

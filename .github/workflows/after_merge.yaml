@@ -1,4 +1,4 @@
-name: build, dockerize and push (latest) the app image
+name: dockerize-latest
 
 on:
   push:
