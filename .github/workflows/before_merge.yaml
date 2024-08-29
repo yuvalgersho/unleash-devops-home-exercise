@@ -1,0 +1,39 @@
+name: build, dockerize and push the app image
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - master
+
+jobs:
+  build-and-push-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: login to docker hub
+        id: login-to-dockerhub
+        env:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          accesstoken: ${{secrets.DOCKERHUB_TOKEN}}
+        run: |
+          docker login -u $username -p $accesstoken
+
+      - name: build the docker image
+        id: build-dockerfile
+        env:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+        run: |
+          docker build -t $username/unleash-app:${{ github.run_number }} .
+
+      - name: push the docker image to docker hub
+        id: push-image
+        env:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+        run: |
+          docker push $username/unleash-app:${{ github.run_number }}
