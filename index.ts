@@ -5,7 +5,7 @@ import { env } from "process";
 const app = express();
 const port =  env.PORT || 3000;
 
-const s3 = new S3();
+const s3 = new S3({ region: 'eu-north-1' });
 
 const bucketName = env.BUCKET_NAME
 
