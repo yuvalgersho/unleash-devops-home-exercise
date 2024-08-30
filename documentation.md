@@ -23,7 +23,6 @@ Both ways run in the CD pipeline and provide a full cd level deployment.
 ## Additional suggestions
 These are things I recommend doing but I haven’t done because of time limitations:
 * Optimize the Dockerfile and reduce size of the docker image.
-* Create templates in the GitHub actions and avoid code duplication.
 * Create and configure the eks cluster with the IAAC.
 * Create advanced policies and roles to secure the deployment of the app. (For example - create a role to limit the permissions of the GitHub actions jobs).
 * Add full documentation for the components (CI, CD, etc)

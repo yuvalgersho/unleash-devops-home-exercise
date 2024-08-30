@@ -12,24 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: login to docker hub
-        id: login-to-dockerhub
-        env:
+      - name: dockerize and push to dockerhub
+        uses: yuvalgersho/unleash-devops-home-exercise/templates/dockerize-and-push@v0.1
+        with:
+          image-tag: latest
           username: ${{secrets.DOCKERHUB_USERNAME}}
           accesstoken: ${{secrets.DOCKERHUB_TOKEN}}
-        run: |
-          docker login -u $username -p $accesstoken
-
-      - name: build the docker image
-        id: build-dockerfile
-        env:
-          username: ${{secrets.DOCKERHUB_USERNAME}}
-        run: |
-          docker build -t $username/unleash-app:latest .
-
-      - name: push the docker image to docker hub
-        id: push-image
-        env:
-          username: ${{secrets.DOCKERHUB_USERNAME}}
-        run: |
-          docker push $username/unleash-app:latest

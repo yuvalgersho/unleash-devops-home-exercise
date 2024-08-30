@@ -1,0 +1,41 @@
+name: docker login, dockerize and push to dockerhub
+inputs:
+  image-tag:
+    required: true
+    type: string
+  username:
+    required: true
+    type: string
+  accesstoken:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+      - name: login to docker hub
+        id: login-to-dockerhub
+        shell: bash
+        env:
+          username: ${{ inputs.username }}
+          accesstoken: ${{ inputs.accesstoken }}
+        run: |
+          docker login -u $username -p $accesstoken
+
+      - name: build the docker image
+        id: build-dockerfile
+        shell: bash
+        env:
+          username: ${{ inputs.username }}
+          imagetag: ${{ inputs.image-tag }}
+        run: |
+          docker build -t $username/unleash-app:$imagetag .
+
+      - name: push the docker image to docker hub
+        id: push-image
+        shell: bash
+        env:
+          username: ${{ inputs.username }}
+          imagetag: ${{ inputs.image-tag }}
+        run: |
+          docker push $username/unleash-app:$imagetag
