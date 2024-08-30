@@ -18,6 +18,13 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'eu-north-1'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -25,13 +32,6 @@ jobs:
 
       - name: Install AWS CDK
         run: npm install -g aws-cdk
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'eu-north-1'
 
       - name: Bootstrap CDK environment
         run: cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-north-1
@@ -45,14 +45,14 @@ jobs:
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
-      - name: Install Helm
-        run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
       - name: Update kubeconfig for EKS cluster
         run: |
           aws eks update-kubeconfig --name yuvalgersho-cluster --region eu-north-1
 
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      
       - name: Deploy Helm Chart to EKS
         run: |
           helm upgrade --install app ./unleash-helm-chart --namespace unleash-namespace --create-namespace
